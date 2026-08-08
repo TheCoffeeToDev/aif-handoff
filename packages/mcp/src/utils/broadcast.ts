@@ -1,5 +1,5 @@
 import { findProjectByTaskId } from "@aif/data";
-import { getEnv, logger, sendTelegramNotification } from "@aif/shared";
+import { getEnv, internalBroadcastHeaders, logger, sendTelegramNotification } from "@aif/shared";
 
 const log = logger("mcp:broadcast");
 
@@ -23,13 +23,9 @@ export async function broadcastTaskChange(
   const url = `${baseUrl}/tasks/${taskId}/broadcast`;
 
   try {
-    const internalToken = getEnv().INTERNAL_BROADCAST_TOKEN?.trim();
     const res = await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(internalToken ? { "X-Internal-Broadcast-Token": internalToken } : {}),
-      },
+      headers: internalBroadcastHeaders(getEnv().INTERNAL_BROADCAST_TOKEN),
       body: JSON.stringify({ type }),
     });
 

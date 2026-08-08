@@ -210,6 +210,7 @@ describe("broadcastTaskChange with Telegram", () => {
       expect.objectContaining({
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer internal-broadcast-secret",
           "X-Internal-Broadcast-Token": "internal-broadcast-secret",
         },
       }),

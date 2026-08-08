@@ -1,3 +1,4 @@
+import { randomBytes } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { resolve } from "node:path";
@@ -104,6 +105,9 @@ function resolveMcpPort(value) {
 }
 
 loadRootEnv();
+if (!process.env.INTERNAL_BROADCAST_TOKEN?.trim()) {
+  process.env.INTERNAL_BROADCAST_TOKEN = randomBytes(32).toString("hex");
+}
 assertNodeVersion();
 assertNativeModulesUsable();
 assertWorkspacePackagesResolveToSource();
